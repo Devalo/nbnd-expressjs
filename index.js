@@ -24,8 +24,12 @@ app.post('/', [
   const errors = validationResult(req);
   const checkedNumber = phoneNumber.checkPhone(req.body.phone);
 
+  // Sender errormsg laget i validator middleware som 400-response
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    const errorMessage = errors.array().map((e) => e.msg);
+    return res.status(400).json({
+      error: errorMessage,
+    });
   }
 
   const formInfo = req.body;
